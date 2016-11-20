@@ -3,7 +3,7 @@
 
 #include <memory>
 
-template<typename T> class List {
+template<typename T> class List : public std::enable_shared_from_this< List<T> > {
     typedef std::shared_ptr< const List<T> > ListPtr;
     private:
         const T value;
