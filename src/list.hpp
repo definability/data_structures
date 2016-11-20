@@ -13,6 +13,10 @@ template<typename T> class List {
         List(const List<T>& list) {
             *(this) = list;
         }
+        List(const T& value, const List<T>* next = 0) {
+            this->value = value;
+            this->next = next;
+        }
 
         bool operator==(const List<T>& list) const {
             return !(!this->next ^ !list.next)
