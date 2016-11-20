@@ -23,7 +23,7 @@ template<typename T> class List : public std::enable_shared_from_this< List<T> >
         List(const T&, const List<T>*) = delete;
 
         ListPtr insert(const T& value, const unsigned position=0) const {
-            if (position >= size) {
+            if (position > size) {
                 throw std::invalid_argument(
                     "Position should not be greater than list size"
                 );
