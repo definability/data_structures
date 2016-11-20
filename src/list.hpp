@@ -5,6 +5,9 @@ template<typename T> class List {
     public:
         List() {
         }
+        List(const List<T>& list) {
+            *(this) = list;
+        }
         ~List() {
         }
 };
