@@ -42,4 +42,26 @@ TYPED_TEST(ListTest, ChainsWithNotEqualParametersAreNotEqual) {
     List_ list_bb(2, list_ba);
 
     ASSERT_TRUE(list_ab != list_bb);
+    ASSERT_TRUE(list_ab != *list_aa);
+}
+
+TYPED_TEST(ListTest, InsertsFirstNodeProperlyPtr) {
+    typedef typename TestFixture::List_ List_;
+    typedef std::shared_ptr<const List_> ListPtr_;
+
+    ListPtr_ list = ListPtr_(new List_(1));
+    ListPtr_ listConstructed = ListPtr_(new List_(1, list));
+    ListPtr_ listInserted = list->insert(1);
+
+    ASSERT_TRUE(*listInserted == *listConstructed);
+}
+
+TYPED_TEST(ListTest, InsertsFirstNodeProperly) {
+    typedef typename TestFixture::List_ List_;
+    typedef std::shared_ptr<const List_> ListPtr_;
+
+    ListPtr_ list = ListPtr_(new List_(1));
+    List_ listConstructed(1, list);
+
+    ASSERT_TRUE(*list->insert(1) == listConstructed);
 }
