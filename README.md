@@ -26,7 +26,7 @@ To run them you can execute unit tests from `build` directory of built project
 
 ## Autobuild
 
+Go to your `build` directory and execute `watch`
 ```bash
-mkdir -p build && cd build && \
-    watch "cmake .. && make && ./tests/unit/testunit --gtest_color=yes | tail"
+watch "cmake .. && make && ./tests/unit/testunit --gtest_color=yes | tail"
 ```
