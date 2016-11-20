@@ -61,7 +61,32 @@ TYPED_TEST(ListTest, InsertsFirstNodeProperly) {
     typedef std::shared_ptr<const List_> ListPtr_;
 
     ListPtr_ list = ListPtr_(new List_(1));
+    List_ listConstructed(2, list);
+
+    ASSERT_TRUE(*list->insert(2) == listConstructed);
+}
+
+TYPED_TEST(ListTest, InsertsLastNodeProperlyPtr) {
+    typedef typename TestFixture::List_ List_;
+    typedef std::shared_ptr<const List_> ListPtr_;
+
+    ListPtr_ list = ListPtr_(new List_(2));
+    ListPtr_ listConstructed = ListPtr_(new List_(1, list));
+
+    ListPtr_ listBeforeInsert = ListPtr_(new List_(1));
+    ListPtr_ listInserted = listBeforeInsert->insert(2, 1);
+
+    ASSERT_TRUE(*listInserted == *listConstructed);
+}
+
+TYPED_TEST(ListTest, InsertsLastNodeProperly) {
+    typedef typename TestFixture::List_ List_;
+    typedef std::shared_ptr<const List_> ListPtr_;
+
+    ListPtr_ list = ListPtr_(new List_(2));
     List_ listConstructed(1, list);
 
-    ASSERT_TRUE(*list->insert(1) == listConstructed);
+    ListPtr_ listBeforeInsert = ListPtr_(new List_(1));
+
+    ASSERT_TRUE(*listBeforeInsert->insert(2, 1) == listConstructed);
 }
