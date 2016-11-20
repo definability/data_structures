@@ -10,6 +10,14 @@ TYPED_TEST(ListTest, ParametrisedConstructorCreatesEqual) {
     ASSERT_TRUE(list_a == list_b);
 }
 
+TYPED_TEST(ListTest, ParametrisedConstructorCreatesNotEqual) {
+    typedef typename TestFixture::List_ List_;
+
+    List_ list_a(0);
+    List_ list_b(1);
+    ASSERT_TRUE(list_a != list_b);
+}
+
 TYPED_TEST(ListTest, ChainsWithEqualParametersAreEqual) {
     typedef typename TestFixture::List_ List_;
     typedef std::shared_ptr<const List_> ListPtr_;
@@ -21,4 +29,17 @@ TYPED_TEST(ListTest, ChainsWithEqualParametersAreEqual) {
     List_ list_bb(2, list_ba);
 
     ASSERT_TRUE(list_ab == list_bb);
+}
+
+TYPED_TEST(ListTest, ChainsWithNotEqualParametersAreNotEqual) {
+    typedef typename TestFixture::List_ List_;
+    typedef std::shared_ptr<const List_> ListPtr_;
+
+    ListPtr_ list_aa = ListPtr_(new List_(1));
+    List_ list_ab(2, list_aa);
+
+    ListPtr_ list_ba = ListPtr_(new List_(2));
+    List_ list_bb(2, list_ba);
+
+    ASSERT_TRUE(list_ab != list_bb);
 }
