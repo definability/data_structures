@@ -4,7 +4,7 @@
 template<typename T> class List {
     private:
         T value;
-        List<T>* next;
+        const List<T>* next;
     public:
         List() {
             this->value = 0;
