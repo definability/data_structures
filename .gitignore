@@ -31,3 +31,6 @@
 # VIM swapfiles
 *.swp
 *.swo
+
+# Build directory
+build/
