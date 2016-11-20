@@ -6,11 +6,12 @@
 template<typename T> class List {
     typedef std::shared_ptr< const List<T> > ListPtr;
     private:
-        T value;
-        ListPtr next;
+        const T value;
+        const ListPtr next;
+        const unsigned size;
     public:
         List(const T& value, const ListPtr& next=nullptr)
-                : value(value), next(next) {
+                : value(value), next(next), size(next? next->size + 1 : 1) {
         }
         List(const List<T>&) = delete;
         List(const T&, const List<T>*) = delete;
