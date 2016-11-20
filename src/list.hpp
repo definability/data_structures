@@ -15,13 +15,14 @@ template<typename T> class List {
         List(const List<T>&) = delete;
         List(const T&, const List<T>*) = delete;
 
-        bool operator==(const List<T>& list) const {
-            return !(!this->next ^ !list.next)
-                && (this->value == list.value)
-                && (this->next == list.next || *(this->next) == *(list.next));
-        }
         bool operator!=(const List<T>& list) const {
-            return !(*this == list);
+            return false
+                || (!this->next ^ !list.next)
+                || (this->value != list.value)
+                || (this->next != list.next && *(this->next) != *(list.next));
+        }
+        bool operator==(const List<T>& list) const {
+            return !(*this != list);
         }
 
         ~List() {}
