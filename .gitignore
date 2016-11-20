@@ -28,9 +28,6 @@
 *.out
 *.app
 
-# Google Test
-googletest/
-
 # VIM swapfiles
 *.swp
 *.swo
