@@ -18,6 +18,7 @@ template<typename T> class List {
         }
 
         ~List() {
+            delete this->next;
         }
 };
 
