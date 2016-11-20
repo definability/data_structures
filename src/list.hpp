@@ -6,17 +6,10 @@ template<typename T> class List {
         T value;
         const List<T>* next;
     public:
-        List() {
-            this->value = 0;
-            this->next = 0;
+        List(const T& value, const List<T>* next = nullptr)
+                : value(value), next(next) {
         }
-        List(const List<T>& list) {
-            *(this) = list;
-        }
-        List(const T& value, const List<T>* next = 0) {
-            this->value = value;
-            this->next = next;
-        }
+        List(const List<T>&) = delete;
 
         bool operator==(const List<T>& list) const {
             return !(!this->next ^ !list.next)
