@@ -11,9 +11,15 @@ template<typename T> class List : public std::enable_shared_from_this< List<T> >
         const unsigned size;
 
         ListPtr _insert(const T& value, const unsigned position) const {
-            return position? this->next->_insert(value, position - 1)
-                           : ListPtr(new List<T>(value,
-                                                 this->shared_from_this()));
+            if (size == 1 && position == 1) {
+                return ListPtr(new List<T>(
+                    this->value, ListPtr(new List<T>(value))));
+            } else if (position > 0) {
+                return ListPtr(new List<T>(
+                    this->value, this->next->_insert(value, position - 1)));
+            } else {
+                return ListPtr(new List<T>(value, this->shared_from_this()));
+            }
         }
     public:
         List(const T& value, const ListPtr& next=nullptr)
