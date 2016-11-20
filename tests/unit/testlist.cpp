@@ -50,8 +50,8 @@ TYPED_TEST(ListTest, InsertsFirstNodeProperlyPtr) {
     typedef std::shared_ptr<const List_> ListPtr_;
 
     ListPtr_ list = ListPtr_(new List_(1));
-    ListPtr_ listConstructed = ListPtr_(new List_(1, list));
-    ListPtr_ listInserted = list->insert(1);
+    ListPtr_ listConstructed = ListPtr_(new List_(2, list));
+    ListPtr_ listInserted = list->insert(2);
 
     ASSERT_TRUE(*listInserted == *listConstructed);
 }
