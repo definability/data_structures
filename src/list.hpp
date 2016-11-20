@@ -20,6 +20,9 @@ template<typename T> class List {
                 && (this->value == list.value)
                 && (this->next == list.next || *(this->next) == *(list.next));
         }
+        bool operator!=(const List<T>& list) const {
+            return !(*this == list);
+        }
 
         ~List() {}
 };
