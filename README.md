@@ -19,7 +19,7 @@ cmake .. && make
 ## Unit tests
 
 Project uses [GTest](https://github.com/google/googletest) framework.
-To run them you can execute unit tests from `build` directory of built project
+To run tests you can execute unit tests from `build` directory of built project
 ```
 ./tests/unit/testunit
 ```
