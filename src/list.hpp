@@ -28,9 +28,26 @@ template<typename T> class List
             const ListPtr newTail = ListPtr(new List<T>(value, this->next));
             return ListPtr(new List<T>(this->value, newTail));
         }
+
+        List(const T* value, const unsigned size)
+                : value(*value)
+                , size(size)
+                , next(size > 1? new List<T>(value + 1, size - 1)
+                               : nullptr) {
+        }
     public:
         List(const T& value, const ListPtr& next=nullptr)
                 : value(value), next(next), size(next? next->size + 1 : 1) {
+        }
+        List(const std::initializer_list<T> value)
+                : value(*value.begin())
+                , size(value.size())
+                , next(value.size() > 1? new List<T>(value.begin() + 1,
+                                                     value.size() - 1)
+                                       : nullptr) {
+            if (value.size() == 0) {
+                throw std::invalid_argument("You can't create an empty list");
+            }
         }
         List(const List<T>&) = delete;
 
