@@ -12,15 +12,21 @@ template<typename T> class List
         const unsigned size;
 
         ListPtr _insert(const T& value, const unsigned position) const {
-            if (size == 1 && position == 1) {
-                return ListPtr(new List<T>(
-                    this->value, ListPtr(new List<T>(value))));
-            } else if (position > 0) {
+            if (position == 0) {
+                return this->insertFirst(value);
+            } else if (size == 1 && position == 1) {
+                return this->insertSecond(value);
+            } else {
                 return ListPtr(new List<T>(
                     this->value, this->next->_insert(value, position - 1)));
-            } else {
-                return ListPtr(new List<T>(value, this->shared_from_this()));
             }
+        }
+        ListPtr insertFirst(const T& value) const {
+            return ListPtr(new List<T>(value, this->shared_from_this()));
+        }
+        ListPtr insertSecond(const T& value) const {
+            const ListPtr newTail = ListPtr(new List<T>(value, this->next));
+            return ListPtr(new List<T>(this->value, newTail));
         }
     public:
         List(const T& value, const ListPtr& next=nullptr)
