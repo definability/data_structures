@@ -5,7 +5,7 @@
 
 template<typename T> class List
         : public std::enable_shared_from_this< List<T> > {
-    typedef std::shared_ptr< const List<T> > ListPtr;
+    using ListPtr = std::shared_ptr< const List<T> >;
     private:
         const T value;
         const ListPtr next;
