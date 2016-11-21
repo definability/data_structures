@@ -25,7 +25,7 @@ template<typename T> class List
             return ListPtr(new List<T>(value, this->shared_from_this()));
         }
         ListPtr insertSecond(const T& value) const {
-            const ListPtr newTail = ListPtr(new List<T>(value, this->next));
+            const ListPtr newTail = ListPtr(new List<T>(value, this->tail()));
             return ListPtr(new List<T>(this->value, newTail));
         }
 
