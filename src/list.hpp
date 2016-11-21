@@ -63,6 +63,10 @@ template<typename T> class List
             return this->_insert(value, position);
         }
 
+        ListPtr tail() const {
+            return this->next;
+        }
+
         bool operator!=(const List<T>& list) const {
             return false
                 || (!this->next ^ !list.next)
