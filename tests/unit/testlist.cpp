@@ -141,3 +141,12 @@ TYPED_TEST(ListTest, TailShouldReturnAllExceptFirstElement) {
     ASSERT_TRUE(*list.tail() == listTail);
     ASSERT_FALSE(*list.tail() == list);
 }
+
+TYPED_TEST(ListTest, RemoveShouldRemoveFirstElementByDefault) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list{1, 2, 3, 4, 5};
+    List_ listTail{2, 3, 4, 5};
+    ASSERT_TRUE(*list.tail() == *list.remove());
+    ASSERT_TRUE(*list.remove() == *list.remove(0));
+}
