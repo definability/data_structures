@@ -119,3 +119,16 @@ TYPED_TEST(ListTest, InsertsLastNodeProperly) {
     ASSERT_TRUE(*list->insert(2, 1) == listProper);
     ASSERT_TRUE(*list->insert(2, 1) == *list->insert(2, 1));
 }
+
+TYPED_TEST(ListTest, PopulatesListToThreeElementsProperly) {
+    using List_ = typename TestFixture::List_;
+    using ListPtr_ = std::shared_ptr<const List_>;
+
+    ListPtr_ list = ListPtr_(new List_(1));
+
+    List_ listProper{1, 2, 3};
+
+    ASSERT_TRUE(*list->insert(3, 1)->insert(2, 1) == listProper);
+    ASSERT_TRUE(*list->insert(3, 1)->insert(2, 1) ==
+                *list->insert(2, 1)->insert(3, 2));
+}
