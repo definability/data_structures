@@ -29,7 +29,8 @@ template<typename T> class List
         List(const List<T>&) = delete;
         List(const T&, const List<T>*) = delete;
 
-        ListPtr insert(const T& value, const unsigned position=0) const {
+        ListPtr insert(const T& value, const unsigned position=0) const
+                throw (std::invalid_argument) {
             if (position > size) {
                 throw std::invalid_argument(
                     "Position should not be greater than list size"
