@@ -132,3 +132,12 @@ TYPED_TEST(ListTest, PopulatesListToThreeElementsProperly) {
     ASSERT_TRUE(*list->insert(3, 1)->insert(2, 1) ==
                 *list->insert(2, 1)->insert(3, 2));
 }
+
+TYPED_TEST(ListTest, TailShouldReturnAllExceptFirstElement) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list{1, 2, 3, 4, 5};
+    List_ listTail{2, 3, 4, 5};
+    ASSERT_TRUE(*list.tail() == listTail);
+    ASSERT_FALSE(*list.tail() == list);
+}
