@@ -31,6 +31,17 @@ TYPED_TEST(ListTest, ChainsWithEqualParametersAreEqual) {
     ASSERT_TRUE(list_ab == list_bb);
 }
 
+TYPED_TEST(ListTest, ConstructsListCorrectlyFromInitializerList) {
+    using List_ = typename TestFixture::List_;
+    using ListPtr_ = std::shared_ptr<const List_>;
+
+    ListPtr_ list_aa = ListPtr_(new List_(2));
+    List_ list_ab(1, list_aa);
+    List_ list_bb({1, 2});
+
+    ASSERT_TRUE(list_ab == list_bb);
+}
+
 TYPED_TEST(ListTest, ChainsWithNotEqualParametersAreNotEqual) {
     using List_ = typename TestFixture::List_;
     using ListPtr_ = std::shared_ptr<const List_>;
