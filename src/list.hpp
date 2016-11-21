@@ -33,7 +33,6 @@ template<typename T> class List
                 : value(value), next(next), size(next? next->size + 1 : 1) {
         }
         List(const List<T>&) = delete;
-        List(const T&, const List<T>*) = delete;
 
         ListPtr insert(const T& value, const unsigned position=0) const
                 throw (std::invalid_argument) {
