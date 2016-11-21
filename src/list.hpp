@@ -29,6 +29,21 @@ template<typename T> class List
             return ListPtr(new List<T>(this->value, newTail));
         }
 
+        ListPtr _remove(const unsigned position) const {
+            if (position == 0) {
+                return this->tail();
+            } else if (size == 1 && position == 1) {
+                return this->removeSecond();
+            } else {
+                return ListPtr(new List<T>(
+                    this->value, this->next->_remove(position - 1)));
+            }
+        }
+        ListPtr removeSecond() const {
+            const ListPtr newTail = this->next? this->next->tail() : nullptr;
+            return ListPtr(new List<T>(this->value, newTail));
+        }
+
         List(const T* value, const unsigned size)
                 : value(*value)
                 , next(size > 1? new List<T>(value + 1, size - 1)
@@ -61,6 +76,16 @@ template<typename T> class List
                 );
             }
             return this->_insert(value, position);
+        }
+
+        ListPtr remove(const unsigned position=0) const
+                throw (std::invalid_argument) {
+            if (position >= size) {
+                throw std::invalid_argument(
+                    "Position should be less than list size"
+                );
+            }
+            return this->_remove(position);
         }
 
         ListPtr tail() const {
