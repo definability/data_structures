@@ -31,20 +31,22 @@ template<typename T> class List
 
         List(const T* value, const unsigned size)
                 : value(*value)
-                , size(size)
                 , next(size > 1? new List<T>(value + 1, size - 1)
-                               : nullptr) {
+                               : nullptr)
+                , size(size) {
         }
     public:
         List(const T& value, const ListPtr& next=nullptr)
-                : value(value), next(next), size(next? next->size + 1 : 1) {
+                : value(value)
+                , next(next)
+                , size(next? next->size + 1 : 1) {
         }
         List(const std::initializer_list<T> value)
                 : value(*value.begin())
-                , size(value.size())
                 , next(value.size() > 1? new List<T>(value.begin() + 1,
                                                      value.size() - 1)
-                                       : nullptr) {
+                                       : nullptr)
+                , size(value.size()) {
             if (value.size() == 0) {
                 throw std::invalid_argument("You can't create an empty list");
             }
