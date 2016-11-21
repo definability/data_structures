@@ -52,8 +52,12 @@ TYPED_TEST(ListTest, ChainsWithNotEqualParametersAreNotEqual) {
     ListPtr_ list_ba = ListPtr_(new List_(2));
     List_ list_bb(2, list_ba);
 
+    List_ list_cc{1, 2};
+
     ASSERT_TRUE(list_ab != list_bb);
     ASSERT_TRUE(list_ab != *list_aa);
+    ASSERT_TRUE(list_cc != list_bb);
+    ASSERT_TRUE(list_cc != list_ab);
 }
 
 TYPED_TEST(ListTest, InsertsFirstNodeProperlyPtr) {
@@ -64,7 +68,10 @@ TYPED_TEST(ListTest, InsertsFirstNodeProperlyPtr) {
     ListPtr_ listConstructed = ListPtr_(new List_(2, list));
     ListPtr_ listInserted = list->insert(2);
 
+    List_ listProper{2, 1};
+
     ASSERT_TRUE(*listInserted == *listConstructed);
+    ASSERT_TRUE(*listInserted == listProper);
 }
 
 TYPED_TEST(ListTest, InsertsFirstNodeProperly) {
@@ -74,7 +81,11 @@ TYPED_TEST(ListTest, InsertsFirstNodeProperly) {
     ListPtr_ list = ListPtr_(new List_(1));
     List_ listConstructed(2, list);
 
+    List_ listProper{2, 1};
+
     ASSERT_TRUE(*list->insert(2) == listConstructed);
+    ASSERT_TRUE(*list->insert(2) == listProper);
+    ASSERT_TRUE(*list->insert(2) == *list->insert(2));
 }
 
 TYPED_TEST(ListTest, InsertsLastNodeProperlyPtr) {
@@ -87,17 +98,24 @@ TYPED_TEST(ListTest, InsertsLastNodeProperlyPtr) {
     ListPtr_ listBeforeInsert = ListPtr_(new List_(1));
     ListPtr_ listInserted = listBeforeInsert->insert(2, 1);
 
+    List_ listProper{1, 2};
+
     ASSERT_TRUE(*listInserted == *listConstructed);
+    ASSERT_TRUE(*listInserted == listProper);
 }
 
 TYPED_TEST(ListTest, InsertsLastNodeProperly) {
     using List_ = typename TestFixture::List_;
     using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list = ListPtr_(new List_(2));
-    List_ listConstructed(1, list);
+    ListPtr_ list_ = ListPtr_(new List_(2));
+    List_ listConstructed(1, list_);
 
-    ListPtr_ listBeforeInsert = ListPtr_(new List_(1));
+    ListPtr_ list = ListPtr_(new List_(1));
 
-    ASSERT_TRUE(*listBeforeInsert->insert(2, 1) == listConstructed);
+    List_ listProper{1, 2};
+
+    ASSERT_TRUE(*list->insert(2, 1) == listConstructed);
+    ASSERT_TRUE(*list->insert(2, 1) == listProper);
+    ASSERT_TRUE(*list->insert(2, 1) == *list->insert(2, 1));
 }
