@@ -32,7 +32,9 @@ template<typename T> class List
                 return this->insertSecond(value);
             } else {
                 return ListPtr(new List<T>(
-                    this->value, this->next->_insert(value, position - 1)));
+                    this->value,
+                    this->next->_insert(value, position - 1)
+                ));
             }
         }
         ListPtr insertFirst(const T& value) const {
