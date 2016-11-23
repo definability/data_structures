@@ -28,21 +28,24 @@ template<typename T> class List
         ListPtr _insert(const T& value, const unsigned position) const {
             if (position == 0) {
                 return this->insertFirst(value);
-            } else if (size == 1 && position == 1) {
-                return this->insertSecond(value);
+            } else if (position == this->size) {
+                return this->insertLast(value);
             } else {
-                return ListPtr(new List<T>(
-                    this->value,
-                    this->next->_insert(value, position - 1)
-                ));
+                return this->insertMiddle(value, position);
             }
         }
         ListPtr insertFirst(const T& value) const {
             return ListPtr(new List<T>(value, this->shared_from_this()));
         }
-        ListPtr insertSecond(const T& value) const {
-            const ListPtr newTail = ListPtr(new List<T>(value, this->tail()));
-            return ListPtr(new List<T>(this->value, newTail));
+        ListPtr insertMiddle(const T& value, const unsigned position) const {
+            const ListPtr newTail = ListPtr(
+                new List<T>(value, this->tail(position - 1)));
+            return this->reverse()->tail(this->size - position - 1)
+                       ->_reverse(newTail);
+        }
+        ListPtr insertLast(const T& value) const {
+            const ListPtr newTail = ListPtr(new List<T>(value, nullptr));
+            return this->reverse()->_reverse(newTail);
         }
 
         ListPtr _remove(const unsigned position) const {
