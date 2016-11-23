@@ -117,6 +117,29 @@ template<typename T> class List
             return this->_reverse();
         }
 
+        ListPtr slice(const unsigned first, const unsigned last=-1) const
+                throw (std::invalid_argument) {
+            if (first > last) {
+                throw std::invalid_argument(
+                    "Slice first element index should not "
+                    "be less than slice last element index"
+                );
+            } else if (first == 0 && last >= this->size) {
+                throw std::invalid_argument(
+                    "Slice should not contain all the list itself."
+                );
+            }
+
+            if (first == 0) {
+                return this->reverse()->tail(this->size - last - 2)->reverse();
+            } else if (last >= this->size) {
+                return this->tail(first - 1);
+            } else {
+                return this->tail(first - 1)->reverse()
+                           ->tail(this->size - last - 2)->reverse();
+            }
+        }
+
         bool operator!=(const List<T>& list) const {
             return false
                 || (!this->next ^ !list.next)
