@@ -150,3 +150,26 @@ TYPED_TEST(ListTest, RemoveShouldRemoveFirstElementByDefault) {
     ASSERT_TRUE(*list.tail() == *list.remove());
     ASSERT_TRUE(*list.remove() == *list.remove(0));
 }
+
+TYPED_TEST(ListTest, ReverseShouldWorkForSingleElement) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list{1};
+    ASSERT_TRUE(*list.reverse() == list);
+}
+
+TYPED_TEST(ListTest, ReverseShouldWorkForTwoElementsList) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list{1, 2};
+    List_ listReversed{2, 1};
+    ASSERT_TRUE(*list.reverse() == listReversed);
+}
+
+TYPED_TEST(ListTest, ReverseShouldWorkForMultipleElementsList) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list{1, 2, 3, 4, 5};
+    List_ listReversed{5, 4, 3, 2, 1};
+    ASSERT_TRUE(*list.reverse() == listReversed);
+}
