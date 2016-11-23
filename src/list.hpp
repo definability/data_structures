@@ -71,8 +71,7 @@ template<typename T> class List
                 , next(value.size() > 1? new List<T>(value.begin() + 1,
                                                      value.size() - 1)
                                        : nullptr)
-                , size(value.size())
-                throw (std::invalid_argument) {
+                , size(value.size()) {
             if (value.size() == 0) {
                 throw std::invalid_argument("You can't create an empty list");
             }
