@@ -104,7 +104,14 @@ template<typename T> class List
                     "Position should be less than list size"
                 );
             }
-            return this->_remove(position);
+            if (position == 0) {
+                return this->tail();
+            } else if (position == this->size - 1) {
+                return this->reverse()->tail()->reverse();
+            } else {
+                return this->slice(0, position - 1)->concatenate(
+                       this->slice(position + 1, -1));
+            }
         }
 
         ListPtr tail(const unsigned position=0) const
