@@ -45,7 +45,7 @@ template<typename T> class List
         }
         ListPtr insertLast(const T& value) const {
             const ListPtr newTail = ListPtr(new List<T>(value, nullptr));
-            return this->reverse()->_reverse(newTail);
+            return this->concatenate(newTail);
         }
 
         List(const T* value, const unsigned size)
