@@ -151,6 +151,22 @@ TYPED_TEST(ListTest, RemoveShouldRemoveFirstElementByDefault) {
     ASSERT_TRUE(*list.remove() == *list.remove(0));
 }
 
+TYPED_TEST(ListTest, RemoveShouldRemoveMiddleElementProperly) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list{1, 2, 3, 4, 5};
+    List_ listAfter{1, 2, 4, 5};
+    ASSERT_TRUE(*list.remove(2) == listAfter);
+}
+
+TYPED_TEST(ListTest, RemoveShouldRemoveLastElementProperly) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list{1, 2, 3, 4, 5};
+    List_ listAfter{1, 2, 3, 4};
+    ASSERT_TRUE(*list.remove(4) == listAfter);
+}
+
 TYPED_TEST(ListTest, ReverseShouldWorkForSingleElement) {
     using List_ = typename TestFixture::List_;
 
