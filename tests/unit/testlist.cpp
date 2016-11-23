@@ -173,3 +173,33 @@ TYPED_TEST(ListTest, ReverseShouldWorkForMultipleElementsList) {
     List_ listReversed{5, 4, 3, 2, 1};
     ASSERT_TRUE(*list.reverse() == listReversed);
 }
+
+TYPED_TEST(ListTest, SliceShouldRemoveFirstElementsCorrectly) {
+    using List_ = typename TestFixture::List_;
+    using ListPtr_ = std::shared_ptr<const List_>;
+
+    ListPtr_ list = ListPtr_(new List_{1, 2, 3, 4, 5});
+    ListPtr_ listSliced = ListPtr_(new List_{3, 4, 5});
+
+    ASSERT_TRUE(*list->slice(2) == *listSliced);
+}
+
+TYPED_TEST(ListTest, SliceShouldRemoveLastElementsCorrectly) {
+    using List_ = typename TestFixture::List_;
+    using ListPtr_ = std::shared_ptr<const List_>;
+
+    ListPtr_ list = ListPtr_(new List_{1, 2, 3, 4, 5});
+    ListPtr_ listSliced = ListPtr_(new List_{1, 2, 3});
+
+    ASSERT_TRUE(*list->slice(0, 2) == *listSliced);
+}
+
+TYPED_TEST(ListTest, SliceShouldRemoveBorderElementsCorrectly) {
+    using List_ = typename TestFixture::List_;
+    using ListPtr_ = std::shared_ptr<const List_>;
+
+    ListPtr_ list = ListPtr_(new List_{1, 2, 3, 4, 5});
+    ListPtr_ listSliced = ListPtr_(new List_{2, 3});
+
+    ASSERT_TRUE(*list->slice(1, 2) == *listSliced);
+}
