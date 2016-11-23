@@ -143,6 +143,10 @@ template<typename T> class List
             }
         }
 
+        ListPtr concatenate(const ListPtr list) const {
+            return this->reverse()->_reverse(list);
+        }
+
         bool operator!=(const List<T>& list) const {
             return false
                 || (!this->next ^ !list.next)
