@@ -48,21 +48,6 @@ template<typename T> class List
             return this->reverse()->_reverse(newTail);
         }
 
-        ListPtr _remove(const unsigned position) const {
-            if (position == 0) {
-                return this->tail();
-            } else if (size == 1 && position == 1) {
-                return this->removeSecond();
-            } else {
-                return ListPtr(new List<T>(
-                    this->value, this->next->_remove(position - 1)));
-            }
-        }
-        ListPtr removeSecond() const {
-            const ListPtr newTail = this->next? this->next->tail() : nullptr;
-            return ListPtr(new List<T>(this->value, newTail));
-        }
-
         List(const T* value, const unsigned size)
                 : value(*value)
                 , next(size > 1? new List<T>(value + 1, size - 1)
