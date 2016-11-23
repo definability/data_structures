@@ -86,7 +86,7 @@ template<typename T> class List
 
         ListPtr insert(const T& value, const unsigned position=0) const
                 throw (std::invalid_argument) {
-            if (position > size) {
+            if (position > this->size) {
                 throw std::invalid_argument(
                     "Position should not be greater than list size"
                 );
@@ -96,7 +96,7 @@ template<typename T> class List
 
         ListPtr remove(const unsigned position=0) const
                 throw (std::invalid_argument) {
-            if (position >= size) {
+            if (position >= this->size) {
                 throw std::invalid_argument(
                     "Position should be less than list size"
                 );
