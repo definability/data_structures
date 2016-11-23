@@ -11,6 +11,10 @@ template<typename T> class List
         const ListPtr next;
         const unsigned size;
 
+        ListPtr _tail(const unsigned position=0) const {
+            return position? this->next->tail(position - 1) : this->next;
+        }
+
         ListPtr _reverse(const ListPtr acc=nullptr) const {
             if (this->next) {
                 return this->next->_reverse(
@@ -98,8 +102,14 @@ template<typename T> class List
             return this->_remove(position);
         }
 
-        ListPtr tail() const {
-            return this->next;
+        ListPtr tail(const unsigned position=0) const
+                throw (std::invalid_argument) {
+            if (position >= this->size) {
+                throw std::invalid_argument(
+                    "Position should be less than list size"
+                );
+            }
+            return this->_tail(position);
         }
         ListPtr reverse() const {
             return this->_reverse();
