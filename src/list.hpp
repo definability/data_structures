@@ -11,6 +11,16 @@ template<typename T> class List
         const ListPtr next;
         const unsigned size;
 
+        ListPtr _reverse(const ListPtr acc=nullptr) const {
+            if (this->next) {
+                return this->next->_reverse(
+                    ListPtr(new List<T>(this->value, acc))
+                );
+            } else {
+                return ListPtr(new List<T>(this->value, acc));
+            }
+        }
+
         ListPtr _insert(const T& value, const unsigned position) const {
             if (position == 0) {
                 return this->insertFirst(value);
@@ -91,6 +101,9 @@ template<typename T> class List
 
         ListPtr tail() const {
             return this->next;
+        }
+        ListPtr reverse() const {
+            return this->_reverse();
         }
 
         bool operator!=(const List<T>& list) const {
