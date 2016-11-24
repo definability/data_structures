@@ -29,7 +29,7 @@ template<typename T> class List
             if (position == 0) {
                 return this->insertFirst(value);
             } else if (position == this->size) {
-                return this->insertLast(value);
+                return this->append(value);
             } else {
                 return this->insertMiddle(value, position);
             }
@@ -42,10 +42,6 @@ template<typename T> class List
                 new List<T>(value, this->tail(position - 1)));
             return this->reverse()->tail(this->size - position - 1)
                        ->_reverse(newTail);
-        }
-        ListPtr insertLast(const T& value) const {
-            const ListPtr newTail = ListPtr(new List<T>(value, nullptr));
-            return this->concatenate(newTail);
         }
 
         List(const T* value, const unsigned size)
@@ -133,6 +129,11 @@ template<typename T> class List
                 return this->tail(first - 1)->reverse()
                            ->tail(this->size - last - 2)->reverse();
             }
+        }
+
+        ListPtr append(const T& value) const {
+            const ListPtr newTail = ListPtr(new List<T>(value, nullptr));
+            return this->concatenate(newTail);
         }
 
         ListPtr concatenate(const ListPtr list) const {
