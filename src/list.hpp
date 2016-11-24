@@ -11,6 +11,10 @@ template<typename T> class List
         const ListPtr next;
         const unsigned size;
 
+        static ListPtr Cons(const T& head, const ListPtr tail=nullptr) {
+            return ListPtr(new List<T>(head, tail));
+        }
+
         ListPtr _tail(const unsigned position=0) const {
             return position? this->next->tail(position - 1) : this->next;
         }
