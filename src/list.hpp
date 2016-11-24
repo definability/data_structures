@@ -21,11 +21,9 @@ template<typename T> class List
 
         ListPtr _reverse(const ListPtr acc=nullptr) const {
             if (this->next) {
-                return this->next->_reverse(
-                    ListPtr(new List<T>(this->value, acc))
-                );
+                return this->next->_reverse(List<T>::Cons(this->value, acc));
             } else {
-                return ListPtr(new List<T>(this->value, acc));
+                return List<T>::Cons(this->value, acc);
             }
         }
 
@@ -39,13 +37,13 @@ template<typename T> class List
             }
         }
         ListPtr insertFirst(const T& value) const {
-            return ListPtr(new List<T>(value, this->shared_from_this()));
+            return List<T>::Cons(value, this->shared_from_this());
         }
         ListPtr insertMiddle(const T& value, const unsigned position) const {
-            const ListPtr newTail = ListPtr(
-                new List<T>(value, this->tail(position - 1)));
-            return this->reverse()->tail(this->size - position - 1)
-                       ->_reverse(newTail);
+            return this
+                ->reverse()
+                ->tail(this->size - position - 1)
+                ->_reverse(List<T>::Cons(value, this->tail(position - 1)));
         }
 
         List(const T* value, const unsigned size)
@@ -136,8 +134,7 @@ template<typename T> class List
         }
 
         ListPtr append(const T& value) const {
-            const ListPtr newTail = ListPtr(new List<T>(value, nullptr));
-            return this->concatenate(newTail);
+            return this->concatenate(List<T>::Cons(value, nullptr));
         }
 
         ListPtr concatenate(const ListPtr list) const {
