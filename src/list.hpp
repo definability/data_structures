@@ -92,7 +92,7 @@ template<typename T> class List
             } else if (position == this->size - 1) {
                 return this->reverse()->tail()->reverse();
             } else {
-                return this->slice(0, position - 1)->concatenate(
+                return this->slice(0, position - 1)->concat(
                        this->slice(position + 1, -1));
             }
         }
@@ -134,10 +134,10 @@ template<typename T> class List
         }
 
         ListPtr append(const T& value) const {
-            return this->concatenate(List<T>::Cons(value, nullptr));
+            return this->concat(List<T>::Cons(value, nullptr));
         }
 
-        ListPtr concatenate(const ListPtr list) const {
+        ListPtr concat(const ListPtr list) const {
             return this->reverse()->_reverse(list);
         }
 
