@@ -134,7 +134,7 @@ template<typename T> class List
         }
 
         ListPtr append(const T& value) const {
-            return this->concat(List<T>::Cons(value, nullptr));
+            return this->concat(List<T>::Cons(value));
         }
 
         ListPtr concat(const ListPtr list) const {
