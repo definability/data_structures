@@ -15,8 +15,8 @@ template<typename T> class List
             return ListPtr(new List<T>(head, tail));
         }
 
-        ListPtr _tail(const unsigned position=0) const {
-            return position? this->next->tail(position - 1) : this->next;
+        ListPtr _drop(const unsigned amount) const {
+            return amount? this->next->drop(amount) : this->next;
         }
 
         ListPtr _reverse(const ListPtr acc=nullptr) const {
@@ -42,8 +42,8 @@ template<typename T> class List
         ListPtr insertMiddle(const T& value, const unsigned position) const {
             return this
                 ->reverse()
-                ->tail(this->size - position - 1)
-                ->_reverse(List<T>::Cons(value, this->tail(position - 1)));
+                ->drop(this->size - position - 1)
+                ->_reverse(List<T>::Cons(value, this->drop(position - 1)));
         }
 
         List(const T* value, const unsigned size)
@@ -97,14 +97,8 @@ template<typename T> class List
             }
         }
 
-        ListPtr tail(const unsigned position=0) const
-                throw (std::invalid_argument) {
-            if (position >= this->size) {
-                throw std::invalid_argument(
-                    "Position should be less than list size"
-                );
-            }
-            return this->_tail(position);
+        ListPtr tail() const {
+            return this->next;
         }
         ListPtr reverse() const {
             return this->_reverse();
@@ -124,13 +118,21 @@ template<typename T> class List
             }
 
             if (first == 0) {
-                return this->reverse()->tail(this->size - last - 2)->reverse();
+                return this->reverse()->drop(this->size - last - 2)->reverse();
             } else if (last >= this->size) {
-                return this->tail(first - 1);
+                return this->drop(first - 1);
             } else {
-                return this->tail(first - 1)->reverse()
-                           ->tail(this->size - last - 2)->reverse();
+                return this->drop(first - 1)->reverse()
+                           ->drop(this->size - last - 2)->reverse();
             }
+        }
+
+        ListPtr drop(const unsigned amount) const
+                throw (std::invalid_argument) {
+            if (amount >= this->size) {
+                return nullptr;
+            }
+            return this->_drop(amount);
         }
 
         ListPtr append(const T& value) const {
