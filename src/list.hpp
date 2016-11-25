@@ -16,7 +16,7 @@ template<typename T> class List
         }
 
         ListPtr _drop(const unsigned amount) const {
-            return amount? this->next->drop(amount) : this->next;
+            return amount? this->next->_drop(amount - 1) : this->next;
         }
 
         ListPtr _reverse(const ListPtr acc=nullptr) const {
