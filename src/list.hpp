@@ -119,7 +119,7 @@ template<typename T> class List
 
             if (first == 0) {
                 return this->reverse()->drop(this->size - last - 2)->reverse();
-            } else if (last >= this->size) {
+            } else if (last >= this->size - 1) {
                 return this->drop(first - 1);
             } else {
                 return this->drop(first - 1)->reverse()
