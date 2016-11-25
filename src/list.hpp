@@ -9,13 +9,13 @@ template<typename T> class List
     private:
         const T value;
         const ListPtr next;
-        const unsigned size;
+        const size_t size;
 
         static ListPtr Cons(const T& head, const ListPtr tail=nullptr) {
             return ListPtr(new List<T>(head, tail));
         }
 
-        ListPtr _drop(const unsigned amount) const {
+        ListPtr _drop(const size_t amount) const {
             return amount? this->next->_drop(amount - 1) : this->next;
         }
 
@@ -27,7 +27,7 @@ template<typename T> class List
             }
         }
 
-        ListPtr _insert(const T& value, const unsigned position) const {
+        ListPtr _insert(const T& value, const size_t position) const {
             if (position == 0) {
                 return this->insertFirst(value);
             } else if (position == this->size) {
@@ -39,14 +39,14 @@ template<typename T> class List
         ListPtr insertFirst(const T& value) const {
             return List<T>::Cons(value, this->shared_from_this());
         }
-        ListPtr insertMiddle(const T& value, const unsigned position) const {
+        ListPtr insertMiddle(const T& value, const size_t position) const {
             return this
                 ->reverse()
                 ->drop(this->size - position - 1)
                 ->_reverse(List<T>::Cons(value, this->drop(position - 1)));
         }
 
-        List(const T* value, const unsigned size)
+        List(const T* value, const size_t size)
                 : value(*value)
                 , next(size > 1? new List<T>(value + 1, size - 1)
                                : nullptr)
@@ -70,7 +70,7 @@ template<typename T> class List
         }
         List(const List<T>&) = delete;
 
-        ListPtr insert(const T& value, const unsigned position=0) const
+        ListPtr insert(const T& value, const size_t position=0) const
                 throw (std::invalid_argument) {
             if (position > this->size) {
                 throw std::invalid_argument(
@@ -80,7 +80,7 @@ template<typename T> class List
             return this->_insert(value, position);
         }
 
-        ListPtr remove(const unsigned position=0) const
+        ListPtr remove(const size_t position=0) const
                 throw (std::invalid_argument) {
             if (position >= this->size) {
                 throw std::invalid_argument(
@@ -104,7 +104,7 @@ template<typename T> class List
             return this->_reverse();
         }
 
-        ListPtr slice(const unsigned first, const unsigned last=-1) const
+        ListPtr slice(const size_t first, const size_t last=-1) const
                 throw (std::invalid_argument) {
             if (first > last) {
                 throw std::invalid_argument(
@@ -127,7 +127,7 @@ template<typename T> class List
             }
         }
 
-        ListPtr drop(const unsigned amount) const {
+        ListPtr drop(const size_t amount) const {
             if (amount >= this->size) {
                 return nullptr;
             }
