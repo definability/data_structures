@@ -127,8 +127,7 @@ template<typename T> class List
             }
         }
 
-        ListPtr drop(const unsigned amount) const
-                throw (std::invalid_argument) {
+        ListPtr drop(const unsigned amount) const {
             if (amount >= this->size) {
                 return nullptr;
             }
