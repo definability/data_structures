@@ -4,26 +4,28 @@
 #include <memory>
 
 template<typename T> class List
-        : public std::enable_shared_from_this< List<T> > {
-    using ListPtr = std::shared_ptr< const List<T> >;
+        : public std::enable_shared_from_this< List<T> >
+        {
+    using ListPtr = const std::shared_ptr< const List<T> >;
+    using List_ = List<T>;
     private:
         const T value;
-        const ListPtr next;
+        ListPtr next;
         const size_t size;
 
-        static ListPtr Cons(const T& head, const ListPtr tail=nullptr) {
-            return ListPtr(new List<T>(head, tail));
+        static ListPtr Cons(const T& head, ListPtr& tail=nullptr) {
+            return std::make_shared<List_>(head, tail);
         }
 
         ListPtr _drop(const size_t amount) const {
             return amount? this->next->_drop(amount - 1) : this->next;
         }
 
-        ListPtr _reverse(const ListPtr acc=nullptr) const {
+        ListPtr _reverse(ListPtr acc=nullptr) const {
             if (this->next) {
-                return this->next->_reverse(List<T>::Cons(this->value, acc));
+                return this->next->_reverse(List_::Cons(this->value, acc));
             } else {
-                return List<T>::Cons(this->value, acc);
+                return List_::Cons(this->value, acc);
             }
         }
 
@@ -37,30 +39,30 @@ template<typename T> class List
             }
         }
         ListPtr insertFirst(const T& value) const {
-            return List<T>::Cons(value, this->shared_from_this());
+            return List_::Cons(value, this->shared_from_this());
         }
         ListPtr insertMiddle(const T& value, const size_t position) const {
             return this
                 ->reverse()
                 ->drop(this->size - position - 1)
-                ->_reverse(List<T>::Cons(value, this->drop(position - 1)));
+                ->_reverse(List_::Cons(value, this->drop(position - 1)));
         }
 
         List(const T* value, const size_t size)
                 : value(*value)
-                , next(size > 1? new List<T>(value + 1, size - 1)
+                , next(size > 1? new List_(value + 1, size - 1)
                                : nullptr)
                 , size(size) {
         }
     public:
-        List(const T& value, const ListPtr& next=nullptr)
+        List(const T& value, ListPtr& next=nullptr)
                 : value(value)
                 , next(next)
                 , size(next? next->size + 1 : 1) {
         }
         List(const std::initializer_list<T> value)
                 : value(*value.begin())
-                , next(value.size() > 1? new List<T>(value.begin() + 1,
+                , next(value.size() > 1? new List_(value.begin() + 1,
                                                      value.size() - 1)
                                        : nullptr)
                 , size(value.size()) {
@@ -68,7 +70,7 @@ template<typename T> class List
                 throw std::invalid_argument("You can't create an empty list");
             }
         }
-        List(const List<T>&) = delete;
+        List(const List_&) = delete;
 
         ListPtr insert(const T& value, const size_t position=0) const
                 throw (std::invalid_argument) {
@@ -135,20 +137,20 @@ template<typename T> class List
         }
 
         ListPtr append(const T& value) const {
-            return this->concat(List<T>::Cons(value));
+            return this->concat(List_::Cons(value));
         }
 
-        ListPtr concat(const ListPtr list) const {
+        ListPtr concat(ListPtr list) const {
             return this->reverse()->_reverse(list);
         }
 
-        bool operator!=(const List<T>& list) const {
+        bool operator!=(const List_& list) const {
             return false
                 || (!this->next ^ !list.next)
                 || (this->value != list.value)
                 || (this->next != list.next && *(this->next) != *(list.next));
         }
-        bool operator==(const List<T>& list) const {
+        bool operator==(const List_& list) const {
             return !(*this != list);
         }
 
