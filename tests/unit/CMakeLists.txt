@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.6)
 project(data-structures-unit-tests)
 
 file(GLOB SRCS *.cpp)
-ADD_EXECUTABLE(testunit ${SRCS})
-TARGET_LINK_LIBRARIES(
+add_executable(testunit ${SRCS})
+target_link_libraries(
     testunit
 
     liblist
