@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(data-structures)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall")
 
 set(list_src list.cpp)
 add_library(liblist STATIC ${list_src})
