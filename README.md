@@ -28,5 +28,5 @@ To run tests you can execute unit tests from `build` directory of built project
 
 Go to your `build` directory and execute `watch`
 ```bash
-watch "cmake .. && make && ./tests/unit/testunit --gtest_color=yes | tail"
+watch --color "cmake .. && make && ./tests/unit/testunit --gtest_color=yes | tail"
 ```
