@@ -160,6 +160,29 @@ template<typename T> class List
             return ListPtr{new List_(head, tail), List_::destroy};
         }
 
+        /**
+         * Custom destruction strategy,
+         * which should be called in order to delete a list.
+         */
+        static void destroy(const List_* list) {
+            if (!list) return;
+
+            std::shared_ptr<const List_> tail = list->next;
+            delete list;
+
+            /**
+             * Watching references count allows us to stop,
+             * when we reached the node,
+             * which is used by another list.
+             *
+             * Also this prevents long loop of construction and destruction,
+             * because destruction calls this function `destroy` again
+             * and it will create a lot of redundant entities
+             * without `tail.use_count() == 1` condition.
+             */
+            for (; tail && tail.use_count() == 1; tail = tail->next);
+        }
+
         ~List() {}
 };
 
