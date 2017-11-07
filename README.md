@@ -1,5 +1,8 @@
 # Data structures
 
+![Build Status](https://api.travis-ci.org/char-lie/data_structures.svg?branch=master)
+
+
 Data structures playground.
 
 # Development
@@ -38,6 +41,7 @@ GTEST_COLOR=1 ctest -V
 ## Autobuild
 
 Go to your `build` directory and execute `watch`
+
 ```bash
 watch --color "cmake .. && make && GTEST_COLOR=1 ctest -V | tail"
 ```
