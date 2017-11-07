@@ -20,15 +20,15 @@ template<typename T> class List
         }
 
         ListPtr _drop(const size_t amount) const {
-            return amount? this->next->_drop(amount - 1) : this->next;
+            return amount
+                ? this->next->_drop(amount - 1)
+                : this->next;
         }
 
         ListPtr _reverse(ListPtr acc=nullptr) const {
-            if (this->next) {
-                return this->next->_reverse(List_::Cons(this->value, acc));
-            } else {
-                return List_::Cons(this->value, acc);
-            }
+            return this->next
+                ? this->next->_reverse(List_::Cons(this->value, acc))
+                : List_::Cons(this->value, acc);
         }
 
         ListPtr _insert(const T& value, const size_t position) const {
@@ -132,10 +132,9 @@ template<typename T> class List
         }
 
         ListPtr drop(const size_t amount) const {
-            if (amount >= this->size) {
-                return nullptr;
-            }
-            return this->_drop(amount);
+            return (amount >= this->size)
+                ? nullptr
+                : this->_drop(amount);
         }
 
         ListPtr append(const T& value) const {
