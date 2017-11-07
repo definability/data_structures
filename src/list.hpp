@@ -92,8 +92,7 @@ template<typename T> class List
             return this->size_;
         }
 
-        ListPtr insert(const T& value, const size_t position=0) const
-                throw (invalid_argument) {
+        ListPtr insert(const T& value, const size_t position=0) const {
             if (position > this->size_) {
                 throw invalid_argument(
                     "Position should not be greater than list size"
@@ -102,8 +101,7 @@ template<typename T> class List
             return this->_insert(value, position);
         }
 
-        ListPtr remove(const size_t position=0) const
-                throw (invalid_argument) {
+        ListPtr remove(const size_t position=0) const {
             if (position >= this->size_) {
                 throw invalid_argument(
                     "Position should be less than list size"
@@ -126,8 +124,7 @@ template<typename T> class List
             return this->_reverse();
         }
 
-        ListPtr slice(const size_t first, const size_t last=-1) const
-                throw (invalid_argument) {
+        ListPtr slice(const size_t first, const size_t last=-1) const {
             if (first > last) {
                 throw invalid_argument(
                     "Slice first element index should not "
@@ -177,8 +174,7 @@ template<typename T> class List
             return ListPtr{new List_(head, tail), List_::destroy};
         }
 
-        static ListPtr fill(size_t amount, const T& value)
-                throw (invalid_argument) {
+        static ListPtr fill(size_t amount, const T& value) {
             if (amount == 0) {
                 throw invalid_argument("You can't create an empty list");
             }
