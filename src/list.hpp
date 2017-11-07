@@ -3,6 +3,8 @@
 
 #include <memory>
 
+using std::invalid_argument;
+
 template<typename T> class List
         : public std::enable_shared_from_this< List<T> >
         {
@@ -62,20 +64,20 @@ template<typename T> class List
         }
         List(const std::initializer_list<T> value)
                 : value(*value.begin())
-                , next(value.size() > 1? new List_(value.begin() + 1,
-                                                     value.size() - 1)
-                                       : nullptr)
+                , next(value.size() > 1
+                    ? new List_(value.begin() + 1, value.size() - 1)
+                    : nullptr)
                 , size(value.size()) {
             if (value.size() == 0) {
-                throw std::invalid_argument("You can't create an empty list");
+                throw invalid_argument("You can't create an empty list");
             }
         }
         List(const List_&) = delete;
 
         ListPtr insert(const T& value, const size_t position=0) const
-                throw (std::invalid_argument) {
+                throw (invalid_argument) {
             if (position > this->size) {
-                throw std::invalid_argument(
+                throw invalid_argument(
                     "Position should not be greater than list size"
                 );
             }
@@ -83,9 +85,9 @@ template<typename T> class List
         }
 
         ListPtr remove(const size_t position=0) const
-                throw (std::invalid_argument) {
+                throw (invalid_argument) {
             if (position >= this->size) {
-                throw std::invalid_argument(
+                throw invalid_argument(
                     "Position should be less than list size"
                 );
             }
@@ -107,14 +109,14 @@ template<typename T> class List
         }
 
         ListPtr slice(const size_t first, const size_t last=-1) const
-                throw (std::invalid_argument) {
+                throw (invalid_argument) {
             if (first > last) {
-                throw std::invalid_argument(
+                throw invalid_argument(
                     "Slice first element index should not "
                     "be less than slice last element index"
                 );
             } else if (first == 0 && last >= this->size) {
-                throw std::invalid_argument(
+                throw invalid_argument(
                     "Slice should not contain all the list itself."
                 );
             }
