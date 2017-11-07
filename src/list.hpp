@@ -13,11 +13,7 @@ template<typename T> class List
     private:
         const T value;
         ListPtr next;
-        const size_t size;
-
-        static ListPtr Cons(const T& head, ListPtr& tail=nullptr) {
-            return std::make_shared<List_>(head, tail);
-        }
+        const size_t size_;
 
         ListPtr _drop(const size_t amount) const {
             return amount
@@ -34,7 +30,7 @@ template<typename T> class List
         ListPtr _insert(const T& value, const size_t position) const {
             if (position == 0) {
                 return this->insertFirst(value);
-            } else if (position == this->size) {
+            } else if (position == this->size_) {
                 return this->append(value);
             } else {
                 return this->insertMiddle(value, position);
@@ -46,7 +42,7 @@ template<typename T> class List
         ListPtr insertMiddle(const T& value, const size_t position) const {
             return this
                 ->reverse()
-                ->drop(this->size - position - 1)
+                ->drop(this->size_ - position - 1)
                 ->_reverse(List_::Cons(value, this->drop(position - 1)));
         }
 
@@ -58,25 +54,30 @@ template<typename T> class List
         }
     public:
         List(const T& value, ListPtr& next=nullptr)
-                : value(value)
-                , next(next)
-                , size(next? next->size + 1 : 1) {
+                : value{value}
+                , next{next}
+                , size_{next? next->size_ + 1 : 1} {
         }
         List(const std::initializer_list<T> value)
-                : value(*value.begin())
-                , next(value.size() > 1
-                    ? new List_(value.begin() + 1, value.size() - 1)
-                    : nullptr)
-                , size(value.size()) {
+                : value{*value.begin()}
+                , next{value.size() > 1
+                    ? new List_{value.begin() + 1, value.size() - 1}
+                    : nullptr}
+                , size_{value.size()} {
             if (value.size() == 0) {
                 throw invalid_argument("You can't create an empty list");
             }
         }
+
         List(const List_&) = delete;
+
+        size_t size() const {
+            return this->size_;
+        }
 
         ListPtr insert(const T& value, const size_t position=0) const
                 throw (invalid_argument) {
-            if (position > this->size) {
+            if (position > this->size_) {
                 throw invalid_argument(
                     "Position should not be greater than list size"
                 );
@@ -86,14 +87,14 @@ template<typename T> class List
 
         ListPtr remove(const size_t position=0) const
                 throw (invalid_argument) {
-            if (position >= this->size) {
+            if (position >= this->size_) {
                 throw invalid_argument(
                     "Position should be less than list size"
                 );
             }
             if (position == 0) {
                 return this->tail();
-            } else if (position == this->size - 1) {
+            } else if (position == this->size_ - 1) {
                 return this->reverse()->tail()->reverse();
             } else {
                 return this->slice(0, position - 1)->concat(
@@ -115,24 +116,24 @@ template<typename T> class List
                     "Slice first element index should not "
                     "be less than slice last element index"
                 );
-            } else if (first == 0 && last >= this->size) {
+            } else if (first == 0 && last >= this->size_) {
                 throw invalid_argument(
                     "Slice should not contain all the list itself."
                 );
             }
 
             if (first == 0) {
-                return this->reverse()->drop(this->size - last - 2)->reverse();
-            } else if (last >= this->size - 1) {
+                return this->reverse()->drop(this->size_ - last - 2)->reverse();
+            } else if (last >= this->size_ - 1) {
                 return this->drop(first - 1);
             } else {
                 return this->drop(first - 1)->reverse()
-                           ->drop(this->size - last - 2)->reverse();
+                           ->drop(this->size_ - last - 2)->reverse();
             }
         }
 
         ListPtr drop(const size_t amount) const {
-            return (amount >= this->size)
+            return (amount >= this->size_)
                 ? nullptr
                 : this->_drop(amount);
         }
@@ -153,6 +154,10 @@ template<typename T> class List
         }
         bool operator==(const List_& list) const {
             return !(*this != list);
+        }
+
+        static ListPtr Cons(const T& head, ListPtr& tail=nullptr) {
+            return ListPtr{new List_(head, tail), List_::destroy};
         }
 
         ~List() {}
