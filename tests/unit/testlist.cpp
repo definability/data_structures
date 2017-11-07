@@ -219,3 +219,15 @@ TYPED_TEST(ListTest, SliceShouldRemoveBorderElementsCorrectly) {
 
     ASSERT_TRUE(*list->slice(1, 2) == *listSliced);
 }
+
+TYPED_TEST(ListTest, FillSizeCorrect) {
+    using List_ = typename TestFixture::List_;
+
+    ASSERT_TRUE(List_::fill(10, 0)->size() == 10);
+}
+
+TYPED_TEST(ListTest, FillLargeSuccess) {
+    using List_ = typename TestFixture::List_;
+
+    ASSERT_TRUE(List_::fill(1E5, 0)->size() == 1E5);
+}
