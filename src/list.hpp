@@ -46,12 +46,29 @@ template<typename T> class List
                 ->_reverse(List_::Cons(value, this->drop(position - 1)));
         }
 
-        List(const T* value, const size_t size)
-                : value(*value)
-                , next(size > 1? new List_(value + 1, size - 1)
-                               : nullptr)
-                , size(size) {
+        static const List_* fill_(unsigned amount, const List*& tail,
+                                  const T& value) {
+            if (!amount) {
+                const List* result = tail;
+                tail = nullptr;
+                return result;
+            }
+            tail = new List_{value, tail};
+            return fill_(amount - 1, tail, value);
         }
+
+        List(const T* value, const size_t size_)
+                : value{*value}
+                , next{size_ > 1? new List_(value + 1, size_ - 1)
+                               : nullptr}
+                , size_{size_} {
+        }
+        List(const T& head, const List_* next)
+            : value{head}
+            , next{next, List::destroy}
+            , size_{next ? next->size_ + 1 : 1} {
+        }
+        List(ListPtr& tail): next{tail} {}
     public:
         List(const T& value, ListPtr& next=nullptr)
                 : value{value}
@@ -158,6 +175,24 @@ template<typename T> class List
 
         static ListPtr Cons(const T& head, ListPtr& tail=nullptr) {
             return ListPtr{new List_(head, tail), List_::destroy};
+        }
+
+        static ListPtr fill(size_t amount, const T& value)
+                throw (invalid_argument) {
+            if (amount == 0) {
+                throw invalid_argument("You can't create an empty list");
+            }
+
+            struct TailGuard {
+                const List* ptr;
+                ~TailGuard() {
+                    List::destroy(this->ptr);
+                }
+            } guard{};
+            const List* result = fill_(amount, guard.ptr, value);
+            return amount
+                ? ListPtr{result, List::destroy}
+                : nullptr;
         }
 
         /**
