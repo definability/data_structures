@@ -114,4 +114,9 @@ matrix:
 before_install:
     - eval "${MATRIX_EVAL}"
 
-script: mkdir build && cd build && cmake .. && make && ./tests/unit/testunit
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - GTEST_COLOR=1 ctest -V
