@@ -118,5 +118,5 @@ script:
   - mkdir build
   - cd build
   - cmake ..
-  - make
+  - cmake --build .
   - GTEST_COLOR=1 ctest -V
