@@ -19,7 +19,7 @@ Project uses [CMake](https://cmake.org/) and it's very easy in use.
 Just execute following code in the `build` directory
 
 ```bash
-cmake .. && make
+cmake .. && cmake --build .
 ```
 
 ## Unit tests
@@ -43,5 +43,5 @@ GTEST_COLOR=1 ctest -V
 Go to your `build` directory and execute `watch`
 
 ```bash
-watch --color "cmake .. && make && GTEST_COLOR=1 ctest -V | tail"
+watch --color "cmake .. && cmake --build . && GTEST_COLOR=1 ctest -V | tail"
 ```
