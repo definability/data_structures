@@ -157,7 +157,7 @@ template<typename T> class List
         /** \brief Creates new instance of List from initializer list.
          * \param value Initializer list of values for the list.
          */
-        List(const initializer_list<T> value)
+        explicit List(const initializer_list<T> value)
                 : value{*value.begin()}
                 , tail_{value.size() > 1
                     ? new List_{value.begin() + 1, value.size() - 1}
@@ -294,7 +294,7 @@ template<typename T> class List
          */
         bool operator!=(const List_& list) const {
             return false
-                || (!this->tail_ ^ !list.tail_)
+                || ((!this->tail_) ^ (!list.tail_))
                 || (this->value != list.value)
                 || (this->tail_ != list.tail_ && *(this->tail_) != *(list.tail_));
         }
