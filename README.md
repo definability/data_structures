@@ -1,5 +1,7 @@
 # Data structures
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e7d30b3feb73477c8fc5219677042ca5)](https://www.codacy.com/app/char-lie/data_structures?utm_source=github.com&utm_medium=referral&utm_content=char-lie/data_structures&utm_campaign=badger)
+
 ![Build Status](https://api.travis-ci.org/char-lie/data_structures.svg?branch=master)
 
 
