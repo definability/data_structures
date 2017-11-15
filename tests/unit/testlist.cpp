@@ -20,12 +20,11 @@ TYPED_TEST(ListTest, ParametrisedConstructorCreatesNotEqual) {
 
 TYPED_TEST(ListTest, ChainsWithEqualParametersAreEqual) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list_aa = ListPtr_(new List_(1));
+    List_ list_aa(1);
     List_ list_ab(2, list_aa);
 
-    ListPtr_ list_ba = ListPtr_(new List_(1));
+    List_ list_ba(1);
     List_ list_bb(2, list_ba);
 
     ASSERT_TRUE(list_ab == list_bb);
@@ -33,9 +32,8 @@ TYPED_TEST(ListTest, ChainsWithEqualParametersAreEqual) {
 
 TYPED_TEST(ListTest, ConstructsListCorrectlyFromInitializerList) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list_aa = ListPtr_(new List_(2));
+    List_ list_aa(2);
     List_ list_ab(1, list_aa);
     List_ list_bb({1, 2});
 
@@ -44,93 +42,87 @@ TYPED_TEST(ListTest, ConstructsListCorrectlyFromInitializerList) {
 
 TYPED_TEST(ListTest, ChainsWithNotEqualParametersAreNotEqual) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list_aa = ListPtr_(new List_(1));
+    List_ list_aa(1);
     List_ list_ab(2, list_aa);
 
-    ListPtr_ list_ba = ListPtr_(new List_(2));
+    List_ list_ba(2);
     List_ list_bb(2, list_ba);
 
     List_ list_cc{1, 2};
 
     ASSERT_TRUE(list_ab != list_bb);
-    ASSERT_TRUE(list_ab != *list_aa);
+    ASSERT_TRUE(list_ab != list_aa);
     ASSERT_TRUE(list_cc != list_bb);
     ASSERT_TRUE(list_cc != list_ab);
 }
 
 TYPED_TEST(ListTest, InsertsFirstNodeProperlyPtr) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list = ListPtr_(new List_(1));
-    ListPtr_ listConstructed = ListPtr_(new List_(2, list));
-    ListPtr_ listInserted = list->insert(2);
+    List_ list(1);
+    List_ listConstructed(2, list);
+    List_ listInserted = list.insert(2);
 
     List_ listProper{2, 1};
 
-    ASSERT_TRUE(*listInserted == *listConstructed);
-    ASSERT_TRUE(*listInserted == listProper);
+    ASSERT_TRUE(listInserted == listConstructed);
+    ASSERT_TRUE(listInserted == listProper);
 }
 
 TYPED_TEST(ListTest, InsertsFirstNodeProperly) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list = ListPtr_(new List_(1));
+    List_ list(1);
     List_ listConstructed(2, list);
 
     List_ listProper{2, 1};
 
-    ASSERT_TRUE(*list->insert(2) == listConstructed);
-    ASSERT_TRUE(*list->insert(2) == listProper);
-    ASSERT_TRUE(*list->insert(2) == *list->insert(2));
+    ASSERT_TRUE(list.insert(2) == listConstructed);
+    ASSERT_TRUE(list.insert(2) == listProper);
+    ASSERT_TRUE(list.insert(2) == list.insert(2));
 }
 
 TYPED_TEST(ListTest, InsertsLastNodeProperlyPtr) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list = ListPtr_(new List_(2));
-    ListPtr_ listConstructed = ListPtr_(new List_(1, list));
+    List_ list(2);
+    List_ listConstructed(1, list);
 
-    ListPtr_ listBeforeInsert = ListPtr_(new List_(1));
-    ListPtr_ listInserted = listBeforeInsert->insert(2, 1);
+    List_ listBeforeInsert(1);
+    List_ listInserted = listBeforeInsert.insert(2, 1);
 
     List_ listProper{1, 2};
 
-    ASSERT_TRUE(*listInserted == *listConstructed);
-    ASSERT_TRUE(*listInserted == listProper);
+    ASSERT_TRUE(listInserted == listConstructed);
+    ASSERT_TRUE(listInserted == listProper);
 }
 
 TYPED_TEST(ListTest, InsertsLastNodeProperly) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list_ = ListPtr_(new List_(2));
+    List_ list_(2);
     List_ listConstructed(1, list_);
 
-    ListPtr_ list = ListPtr_(new List_(1));
+    List_ list(1);
 
     List_ listProper{1, 2};
 
-    ASSERT_TRUE(*list->insert(2, 1) == listConstructed);
-    ASSERT_TRUE(*list->insert(2, 1) == listProper);
-    ASSERT_TRUE(*list->insert(2, 1) == *list->insert(2, 1));
+    ASSERT_TRUE(list.insert(2, 1) == listConstructed);
+    ASSERT_TRUE(list.insert(2, 1) == listProper);
+    ASSERT_TRUE(list.insert(2, 1) == list.insert(2, 1));
 }
 
 TYPED_TEST(ListTest, PopulatesListToThreeElementsProperly) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list = ListPtr_(new List_(1));
+    List_ list(1);
 
     List_ listProper{1, 2, 3};
 
-    ASSERT_TRUE(*list->insert(3, 1)->insert(2, 1) == listProper);
-    ASSERT_TRUE(*list->insert(3, 1)->insert(2, 1) ==
-                *list->insert(2, 1)->insert(3, 2));
+    ASSERT_TRUE(list.insert(3, 1).insert(2, 1) == listProper);
+    ASSERT_TRUE(list.insert(3, 1).insert(2, 1) ==
+                list.insert(2, 1).insert(3, 2));
 }
 
 TYPED_TEST(ListTest, TailShouldReturnAllExceptFirstElement) {
@@ -138,8 +130,8 @@ TYPED_TEST(ListTest, TailShouldReturnAllExceptFirstElement) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listTail{2, 3, 4, 5};
-    ASSERT_TRUE(*list.tail() == listTail);
-    ASSERT_FALSE(*list.tail() == list);
+    ASSERT_TRUE(list.tail() == listTail);
+    ASSERT_FALSE(list.tail() == list);
 }
 
 TYPED_TEST(ListTest, RemoveShouldRemoveFirstElementByDefault) {
@@ -147,8 +139,8 @@ TYPED_TEST(ListTest, RemoveShouldRemoveFirstElementByDefault) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listTail{2, 3, 4, 5};
-    ASSERT_TRUE(*list.tail() == *list.remove());
-    ASSERT_TRUE(*list.remove() == *list.remove(0));
+    ASSERT_TRUE(list.tail() == list.remove());
+    ASSERT_TRUE(list.remove() == list.remove(0));
 }
 
 TYPED_TEST(ListTest, RemoveShouldRemoveMiddleElementProperly) {
@@ -156,7 +148,7 @@ TYPED_TEST(ListTest, RemoveShouldRemoveMiddleElementProperly) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listAfter{1, 2, 4, 5};
-    ASSERT_TRUE(*list.remove(2) == listAfter);
+    ASSERT_TRUE(list.remove(2) == listAfter);
 }
 
 TYPED_TEST(ListTest, RemoveShouldRemoveLastElementProperly) {
@@ -164,14 +156,14 @@ TYPED_TEST(ListTest, RemoveShouldRemoveLastElementProperly) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listAfter{1, 2, 3, 4};
-    ASSERT_TRUE(*list.remove(4) == listAfter);
+    ASSERT_TRUE(list.remove(4) == listAfter);
 }
 
 TYPED_TEST(ListTest, ReverseShouldWorkForSingleElement) {
     using List_ = typename TestFixture::List_;
 
     List_ list{1};
-    ASSERT_TRUE(*list.reverse() == list);
+    ASSERT_TRUE(list.reverse() == list);
 }
 
 TYPED_TEST(ListTest, ReverseShouldWorkForTwoElementsList) {
@@ -179,7 +171,7 @@ TYPED_TEST(ListTest, ReverseShouldWorkForTwoElementsList) {
 
     List_ list{1, 2};
     List_ listReversed{2, 1};
-    ASSERT_TRUE(*list.reverse() == listReversed);
+    ASSERT_TRUE(list.reverse() == listReversed);
 }
 
 TYPED_TEST(ListTest, ReverseShouldWorkForMultipleElementsList) {
@@ -187,47 +179,44 @@ TYPED_TEST(ListTest, ReverseShouldWorkForMultipleElementsList) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listReversed{5, 4, 3, 2, 1};
-    ASSERT_TRUE(*list.reverse() == listReversed);
+    ASSERT_TRUE(list.reverse() == listReversed);
 }
 
 TYPED_TEST(ListTest, SliceShouldRemoveFirstElementsCorrectly) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list = ListPtr_(new List_{1, 2, 3, 4, 5});
-    ListPtr_ listSliced = ListPtr_(new List_{3, 4, 5});
+    List_ list{1, 2, 3, 4, 5};
+    List_ listSliced{3, 4, 5};
 
-    ASSERT_TRUE(*list->slice(2) == *listSliced);
+    ASSERT_TRUE(list.slice(2) == listSliced);
 }
 
 TYPED_TEST(ListTest, SliceShouldRemoveLastElementsCorrectly) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list = ListPtr_(new List_{1, 2, 3, 4, 5});
-    ListPtr_ listSliced = ListPtr_(new List_{1, 2, 3});
+    List_ list{1, 2, 3, 4, 5};
+    List_ listSliced{1, 2, 3};
 
-    ASSERT_TRUE(*list->slice(0, 2) == *listSliced);
+    ASSERT_TRUE(list.slice(0, 2) == listSliced);
 }
 
 TYPED_TEST(ListTest, SliceShouldRemoveBorderElementsCorrectly) {
     using List_ = typename TestFixture::List_;
-    using ListPtr_ = std::shared_ptr<const List_>;
 
-    ListPtr_ list = ListPtr_(new List_{1, 2, 3, 4, 5});
-    ListPtr_ listSliced = ListPtr_(new List_{2, 3});
+    List_ list{1, 2, 3, 4, 5};
+    List_ listSliced{2, 3};
 
-    ASSERT_TRUE(*list->slice(1, 2) == *listSliced);
+    ASSERT_TRUE(list.slice(1, 2) == listSliced);
 }
 
 TYPED_TEST(ListTest, FillSizeCorrect) {
     using List_ = typename TestFixture::List_;
 
-    ASSERT_TRUE(List_::fill(10, 0)->size() == 10);
+    ASSERT_TRUE(List_::fill(10, 0).size() == 10);
 }
 
 TYPED_TEST(ListTest, FillLargeSuccess) {
     using List_ = typename TestFixture::List_;
 
-    ASSERT_TRUE(List_::fill(1E5, 0)->size() == 1E5);
+    ASSERT_TRUE(List_::fill(1E5, 0).size() == 1E5);
 }
