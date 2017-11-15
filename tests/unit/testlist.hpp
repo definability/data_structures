@@ -3,7 +3,7 @@
 
 template<typename T> class ListTest : public ::testing::Test {
     public:
-        typedef List<T> List_;
+        using List_ = const List<const T>;
         static T shared_;
         T value_;
     protected:
