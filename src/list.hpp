@@ -393,13 +393,13 @@ private:
      * The constructor only copies pointer to `list`
      * and wraps it.
      */
-    List(const shared_ptr<const List_>& list) : list{list} {
+    explicit List(const shared_ptr<const List_>& list) : list{list} {
     };
 public:
     /** \brief Create list with a single element.
      * \param value Value of the head.
      */
-    List(const T& value)
+    explicit List(const T& value)
         : list{new List_{value}, List_::destroy} {
     }
     /**
@@ -440,7 +440,7 @@ public:
      * @copydoc List_::insert
      */
     const List insert(const T& value, const size_t position = 0) const {
-        return this->list->insert(value, position);
+        return List{this->list->insert(value, position)};
     }
     /**
      * @copydoc List_::remove
@@ -504,7 +504,7 @@ public:
      * See List_::fill for implementation details.
      */
     static const List fill(size_t amount, const T& value) {
-        return List_::fill(amount, value);
+        return List{List_::fill(amount, value)};
     }
 };
 
