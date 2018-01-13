@@ -38,25 +38,25 @@ private:
          * \param amount Number of nodes to be removed.
          * \return List without `amount` first elements.
          */
-        ListPtr _drop(const size_t amount) const {
+        ListPtr drop_(const size_t amount) const {
             return amount
-                ? this->tail_->_drop(amount - 1)
+                ? this->tail_->drop_(amount - 1)
                 : this->tail_;
         }
         /**
          * \param acc List that will be appended to end of resulting list.
          * \return Reversed list with `acc` appended.
          */
-        ListPtr _reverse(ListPtr acc=nullptr) const {
+        ListPtr reverse_(ListPtr acc=nullptr) const {
             return this->tail_
-                ? this->tail_->_reverse(ListPtr{new List_{this->value, acc}, List_::destroy})
+                ? this->tail_->reverse_(ListPtr{new List_{this->value, acc}, List_::destroy})
                 : ListPtr{new List_{this->value, acc}, List_::destroy};
         }
         /**
          * \param value Value to be inserted.
          * \param position Index of the inserted element in resulting list.
          */
-        ListPtr _insert(const T& value, const size_t position) const {
+        ListPtr insert_(const T& value, const size_t position) const {
             if (position == 0) {
                 return this->insertFirst(value);
             } else if (position == this->size_) {
@@ -84,7 +84,7 @@ private:
             return this
                 ->reverse()
                 ->drop(this->size_ - position - 1)
-                ->_reverse(ListPtr{new List_{value, this->drop(position - 1)}, List_::destroy});
+                ->reverse_(ListPtr{new List_{value, this->drop(position - 1)}, List_::destroy});
         }
         /** \brief Helper function for fill().
          * \param amount Size of list to be created.
@@ -214,7 +214,7 @@ private:
                     "Position should not be greater than list size"
                 );
             }
-            return this->_insert(value, position);
+            return this->insert_(value, position);
         }
         /**
          * \param position Position of element to be removed.
@@ -245,7 +245,7 @@ private:
          * \return List with elements in reversed order.
          */
         ListPtr reverse() const {
-            return this->_reverse();
+            return this->reverse_();
         }
         /**
          * \param first Amount of elements to be dropped
@@ -287,7 +287,7 @@ private:
         ListPtr drop(const size_t amount) const {
             return (amount >= this->size_)
                 ? nullptr
-                : this->_drop(amount);
+                : this->drop_(amount);
         }
         /**
          * \param value Value to append.
@@ -303,7 +303,7 @@ private:
          * \return Concatenation of current list with `list`.
          */
         ListPtr concat(ListPtr list) const {
-            return this->reverse()->_reverse(list);
+            return this->reverse()->reverse_(list);
         }
         /**
          * \brief Check whether lists are not equal.
