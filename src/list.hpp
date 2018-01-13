@@ -396,20 +396,21 @@ private:
     explicit List(const shared_ptr<const List_>& list) : list{list} {
     };
 public:
-    /** \brief Create list with a single element.
+    /** \brief Create a list with a single element.
      * \param value Value of the head.
      */
     explicit List(const T& value)
         : list{new List_{value}, List_::destroy} {
     }
     /**
+     * \brief Create a list with head and tail.
      * \param value Value of the head.
      * \param tail Tail of the list.
      */
     List(const T& value, const List<T>& tail)
         : list{new List_{value, tail.list}, List_::destroy} {
     }
-    /** \brief Creates new instance of List from initializer list.
+    /** \brief Create new instance of List from initializer list.
      * \param value Initializer list of values for the list.
      */
     explicit List(const initializer_list<T> value)
