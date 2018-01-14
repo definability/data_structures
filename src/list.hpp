@@ -71,7 +71,8 @@ private:
          * \return List with `value` in head and `this` in tail.
          */
         ListPtr insertFirst(const T& value) const {
-            return ListPtr{new List_{value, this->shared_from_this()}, List_::destroy};
+            return ListPtr{
+                new List_{value, this->shared_from_this()}, List_::destroy};
         }
         /**
          * \param value Value to be inserted.
@@ -85,7 +86,8 @@ private:
             return this
                 ->reverse()
                 ->drop(this->size_ - position - 1)
-                ->reverse_(ListPtr{new List_{value, this->drop(position - 1)}, List_::destroy});
+                ->reverse_(ListPtr{new List_{value, this->drop(position - 1)},
+                                   List_::destroy});
         }
         /** \brief Helper function for fill().
          * \param amount Size of list to be created.
@@ -129,7 +131,8 @@ private:
          */
         List_(const T* begin, const size_t size)
                 : value{*begin}
-                , tail_{size > 1? ListPtr{new List_(begin + 1, size - 1), List_::destroy}
+                , tail_{size > 1? ListPtr{new List_(begin + 1, size - 1),
+                                          List_::destroy}
                                : nullptr}
                 , size_{size} {
         }
@@ -169,7 +172,8 @@ private:
         explicit List_(const initializer_list<T> value)
                 : value{*value.begin()}
                 , tail_{value.size() > 1
-                    ? ListPtr{new List_{value.begin() + 1, value.size() - 1}, List_::destroy}
+                    ? ListPtr{new List_{value.begin() + 1, value.size() - 1},
+                              List_::destroy}
                     : nullptr}
                 , size_{value.size()} {
             if (value.size() == 0) {
