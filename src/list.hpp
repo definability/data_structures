@@ -49,7 +49,8 @@ private:
          */
         ListPtr reverse_(ListPtr acc=nullptr) const {
             return this->tail_
-                ? this->tail_->reverse_(ListPtr{new List_{this->value, acc}, List_::destroy})
+                ? this->tail_->reverse_(
+                    ListPtr{new List_{this->value, acc}, List_::destroy})
                 : ListPtr{new List_{this->value, acc}, List_::destroy};
         }
         /**
