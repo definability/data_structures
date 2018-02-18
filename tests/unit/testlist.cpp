@@ -220,3 +220,31 @@ TYPED_TEST(ListTest, FillLargeSuccess) {
 
     ASSERT_TRUE(List_::fill(1E5, 0).size() == 1E5);
 }
+
+TYPED_TEST(ListTest, GetSuccess) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list({1, 2});
+
+    ASSERT_EQ(list.get(0), 1);
+    ASSERT_EQ(list.get(1), 2);
+}
+
+TYPED_TEST(ListTest, SubsriptOperatorSuccess) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list({1, 2});
+
+    ASSERT_EQ(list[0], 1);
+    ASSERT_EQ(list[1], 2);
+}
+
+TYPED_TEST(ListTest, SetSuccess) {
+    using List_ = typename TestFixture::List_;
+
+    List_ list({1, 2});
+
+    ASSERT_EQ(list.set(0, 3)[0], 3);
+    ASSERT_EQ(list.set(0, 3).set(1, 4)[1], 4);
+    ASSERT_EQ(list.set(1, 4).set(0, 3)[1], 4);
+}

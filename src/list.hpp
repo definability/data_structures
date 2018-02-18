@@ -89,6 +89,17 @@ private:
                 ->reverse_(ListPtr{new List_{value, this->drop(position - 1)},
                                    List_::destroy});
         }
+        /**
+         * \brief Get value of precise element of the list.
+         * \param position Position of needed element.
+         * The first element has a position `0`.
+         * \return Value of the element on the specified position.
+         */
+        const T get_(const size_t position) const {
+            return position
+                ? this->tail_->get(position - 1)
+                : this->value;
+        }
         /** \brief Helper function for fill().
          * \param amount Size of list to be created.
          * \param tail Reference that holds pointer to list,
@@ -311,6 +322,27 @@ private:
             return this->reverse()->reverse_(list);
         }
         /**
+         * \brief Replace value of the list on following position.
+         * \param position Position at which new value should be placed.
+         * \param value New value.
+         * \return List with new value on specified position.
+         */
+        ListPtr set(size_t position, const T& value) const {
+            if (position < 0 || position >= this->size()) {
+                throw invalid_argument("You can set only existent element.");
+            }
+            return this->remove(position)->insert(value, position);
+        }
+        /**
+         * copydoc List_::get_
+         */
+        const T get(const size_t position) const {
+            if (position < 0 || position >= this->size()) {
+                throw invalid_argument("You can get only existent element.");
+            }
+            return this->get_(position);
+        }
+        /**
          * \brief Check whether lists are not equal.
          * Equality means same number of nodes with same values.
          * \param list List to compare with.
@@ -491,6 +523,18 @@ public:
         return List{this->list->concat(list.list)};
     }
     /**
+     * @copydoc List_::set
+     */
+    const List set(const size_t position, const T& value) const {
+        return List{this->list->set(position, value)};
+    }
+    /**
+     * @copydoc List_::get
+     */
+    const T get(const size_t position) const {
+        return this->list->get(position);
+    }
+    /**
      * @copydoc List_::operator!=
      */
     bool operator!=(const List& list) const {
@@ -501,6 +545,12 @@ public:
      */
     bool operator==(const List& list) const {
         return *this->list == *list.list;
+    }
+    /**
+     * @copydoc List::get
+     */
+    const T operator[](const size_t position) const {
+        return this->get(position);
     }
     /**
      * \brief Create new List of specific length with specific values.
