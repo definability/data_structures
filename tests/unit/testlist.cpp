@@ -244,8 +244,7 @@ TYPED_TEST(ListTest, SetSuccess) {
 
     List_ list({1, 2});
 
-    list.set(0, 3);
-    list.set(1, 4);
-    ASSERT_EQ(list[0], 3);
-    ASSERT_EQ(list[1], 4);
+    ASSERT_EQ(list.set(0, 3)[0], 3);
+    ASSERT_EQ(list.set(0, 3).set(1, 4)[1], 4);
+    ASSERT_EQ(list.set(1, 4).set(0, 3)[1], 4);
 }
