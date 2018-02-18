@@ -89,6 +89,17 @@ private:
                 ->reverse_(ListPtr{new List_{value, this->drop(position - 1)},
                                    List_::destroy});
         }
+        /**
+         * \brief Get value of precise element of the list.
+         * \param position Position of needed element.
+         * The first element has a position `0`.
+         * \return Value of the element on the specified position.
+         */
+        const T get_(const size_t position) const {
+            return position
+                ? this->tail_->get(position - 1)
+                : this->value;
+        }
         /** \brief Helper function for fill().
          * \param amount Size of list to be created.
          * \param tail Reference that holds pointer to list,
@@ -317,18 +328,19 @@ private:
          * \return List with new value on specified position.
          */
         ListPtr set(size_t position, const T& value) const {
+            if (position < 0 || position >= this->size()) {
+                throw invalid_argument("You can set only existent element.");
+            }
             return this->remove(position)->insert(value, position);
         }
         /**
-         * \brief Get value of precise element of the list.
-         * \param position Position of needed element.
-         * The first element has a position `0`.
-         * \return Value of the element on the specified position.
+         * copydoc List_::get_
          */
         const T get(const size_t position) const {
-            return position
-                ? this->tail_->get(position - 1)
-                : this->value;
+            if (position < 0 || position >= this->size()) {
+                throw invalid_argument("You can get only existent element.");
+            }
+            return this->get_(position);
         }
         /**
          * \brief Check whether lists are not equal.
