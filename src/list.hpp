@@ -23,7 +23,7 @@ private:
          */
         using ListPtr = const shared_ptr<const List_>;
         /**
-         * value that the list stores.
+         * Value that the list stores.
          */
         const T value;
         /**
@@ -89,7 +89,8 @@ private:
                 ->reverse_(ListPtr{new List_{value, this->drop(position - 1)},
                                    List_::destroy});
         }
-        /** \brief Helper function for fill().
+        /**
+         * \brief Helper function for fill().
          * \param amount Size of list to be created.
          * \param tail Reference that holds pointer to list,
          * that should be appended as a tail to newly created list.
@@ -115,7 +116,8 @@ private:
             tail = new List_{value, tail};
             return fill_(amount - 1, tail, value);
         }
-        /** \brief Helper constructor for initializer list arguments.
+        /**
+         * \brief Helper constructor for initializer list arguments.
          * \param begin Beginning of values array.
          * \param size Size of the `begin` array.
          *
@@ -166,7 +168,8 @@ private:
                 , tail_{tail_}
                 , size_{tail_? tail_->size_ + 1 : 1} {
         }
-        /** \brief Creates new instance of List from initializer list.
+        /**
+         * \brief Creates new instance of List from initializer list.
          * \param value Initializer list of values for the list.
          */
         explicit List_(const initializer_list<T> value)
@@ -365,7 +368,8 @@ private:
                 ? ListPtr{result, List_::destroy}
                 : nullptr;
         }
-        /** \brief Custom destruction strategy,
+        /**
+         * \brief Custom destruction strategy,
          * which should be called in order to delete a list.
          * \param list Pointer to list to destroy.
          *
@@ -387,10 +391,12 @@ private:
             for (; tail && tail.use_count() == 1; tail = tail->tail_);
         }
     };
-    /** \brief Pointer to wrapped list.
+    /**
+     * \brief Pointer to wrapped list.
      */
     const shared_ptr<const List_> list;
-    /** \brief Construct list wrapper.
+    /**
+     * \brief Construct list wrapper.
      * \param list List_ to be wrapped.
      *
      * This constructor uses private class List_,
@@ -401,7 +407,8 @@ private:
     explicit List(const shared_ptr<const List_>& list) : list{list} {
     };
 public:
-    /** \brief Create a list with a single element.
+    /**
+     * \brief Create a list with a single element.
      * \param value Value of the head.
      */
     explicit List(const T& value)
@@ -415,7 +422,8 @@ public:
     List(const T& value, const List<T>& tail)
         : list{new List_{value, tail.list}, List_::destroy} {
     }
-    /** \brief Create new instance of List from initializer list.
+    /**
+     * \brief Create new instance of List from initializer list.
      * \param value Initializer list of values for the list.
      */
     explicit List(const initializer_list<T> value)

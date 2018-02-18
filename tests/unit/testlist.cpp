@@ -7,7 +7,7 @@ TYPED_TEST(ListTest, ParametrisedConstructorCreatesEqual) {
 
     List_ list_a(0);
     List_ list_b(0);
-    ASSERT_TRUE(list_a == list_b);
+    ASSERT_EQ(list_a, list_b);
 }
 
 TYPED_TEST(ListTest, ParametrisedConstructorCreatesNotEqual) {
@@ -15,7 +15,7 @@ TYPED_TEST(ListTest, ParametrisedConstructorCreatesNotEqual) {
 
     List_ list_a(0);
     List_ list_b(1);
-    ASSERT_TRUE(list_a != list_b);
+    ASSERT_NE(list_a, list_b);
 }
 
 TYPED_TEST(ListTest, ChainsWithEqualParametersAreEqual) {
@@ -27,7 +27,7 @@ TYPED_TEST(ListTest, ChainsWithEqualParametersAreEqual) {
     List_ list_ba(1);
     List_ list_bb(2, list_ba);
 
-    ASSERT_TRUE(list_ab == list_bb);
+    ASSERT_EQ(list_ab, list_bb);
 }
 
 TYPED_TEST(ListTest, ConstructsListCorrectlyFromInitializerList) {
@@ -37,7 +37,7 @@ TYPED_TEST(ListTest, ConstructsListCorrectlyFromInitializerList) {
     List_ list_ab(1, list_aa);
     List_ list_bb({1, 2});
 
-    ASSERT_TRUE(list_ab == list_bb);
+    ASSERT_EQ(list_ab, list_bb);
 }
 
 TYPED_TEST(ListTest, ChainsWithNotEqualParametersAreNotEqual) {
@@ -51,10 +51,10 @@ TYPED_TEST(ListTest, ChainsWithNotEqualParametersAreNotEqual) {
 
     List_ list_cc{1, 2};
 
-    ASSERT_TRUE(list_ab != list_bb);
-    ASSERT_TRUE(list_ab != list_aa);
-    ASSERT_TRUE(list_cc != list_bb);
-    ASSERT_TRUE(list_cc != list_ab);
+    ASSERT_NE(list_ab, list_bb);
+    ASSERT_NE(list_ab, list_aa);
+    ASSERT_NE(list_cc, list_bb);
+    ASSERT_NE(list_cc, list_ab);
 }
 
 TYPED_TEST(ListTest, InsertsFirstNodeProperlyPtr) {
@@ -66,8 +66,8 @@ TYPED_TEST(ListTest, InsertsFirstNodeProperlyPtr) {
 
     List_ listProper{2, 1};
 
-    ASSERT_TRUE(listInserted == listConstructed);
-    ASSERT_TRUE(listInserted == listProper);
+    ASSERT_EQ(listInserted, listConstructed);
+    ASSERT_EQ(listInserted, listProper);
 }
 
 TYPED_TEST(ListTest, InsertsFirstNodeProperly) {
@@ -78,9 +78,9 @@ TYPED_TEST(ListTest, InsertsFirstNodeProperly) {
 
     List_ listProper{2, 1};
 
-    ASSERT_TRUE(list.insert(2) == listConstructed);
-    ASSERT_TRUE(list.insert(2) == listProper);
-    ASSERT_TRUE(list.insert(2) == list.insert(2));
+    ASSERT_EQ(list.insert(2), listConstructed);
+    ASSERT_EQ(list.insert(2), listProper);
+    ASSERT_EQ(list.insert(2), list.insert(2));
 }
 
 TYPED_TEST(ListTest, InsertsLastNodeProperlyPtr) {
@@ -94,8 +94,8 @@ TYPED_TEST(ListTest, InsertsLastNodeProperlyPtr) {
 
     List_ listProper{1, 2};
 
-    ASSERT_TRUE(listInserted == listConstructed);
-    ASSERT_TRUE(listInserted == listProper);
+    ASSERT_EQ(listInserted, listConstructed);
+    ASSERT_EQ(listInserted, listProper);
 }
 
 TYPED_TEST(ListTest, InsertsLastNodeProperly) {
@@ -108,9 +108,9 @@ TYPED_TEST(ListTest, InsertsLastNodeProperly) {
 
     List_ listProper{1, 2};
 
-    ASSERT_TRUE(list.insert(2, 1) == listConstructed);
-    ASSERT_TRUE(list.insert(2, 1) == listProper);
-    ASSERT_TRUE(list.insert(2, 1) == list.insert(2, 1));
+    ASSERT_EQ(list.insert(2, 1), listConstructed);
+    ASSERT_EQ(list.insert(2, 1), listProper);
+    ASSERT_EQ(list.insert(2, 1), list.insert(2, 1));
 }
 
 TYPED_TEST(ListTest, PopulatesListToThreeElementsProperly) {
@@ -120,9 +120,9 @@ TYPED_TEST(ListTest, PopulatesListToThreeElementsProperly) {
 
     List_ listProper{1, 2, 3};
 
-    ASSERT_TRUE(list.insert(3, 1).insert(2, 1) == listProper);
-    ASSERT_TRUE(list.insert(3, 1).insert(2, 1) ==
-                list.insert(2, 1).insert(3, 2));
+    ASSERT_EQ(list.insert(3, 1).insert(2, 1), listProper);
+    ASSERT_EQ(list.insert(3, 1).insert(2, 1),
+              list.insert(2, 1).insert(3, 2));
 }
 
 TYPED_TEST(ListTest, TailShouldReturnAllExceptFirstElement) {
@@ -130,8 +130,8 @@ TYPED_TEST(ListTest, TailShouldReturnAllExceptFirstElement) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listTail{2, 3, 4, 5};
-    ASSERT_TRUE(list.tail() == listTail);
-    ASSERT_FALSE(list.tail() == list);
+    ASSERT_EQ(list.tail(), listTail);
+    ASSERT_NE(list.tail(), list);
 }
 
 TYPED_TEST(ListTest, RemoveShouldRemoveFirstElementByDefault) {
@@ -139,8 +139,8 @@ TYPED_TEST(ListTest, RemoveShouldRemoveFirstElementByDefault) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listTail{2, 3, 4, 5};
-    ASSERT_TRUE(list.tail() == list.remove());
-    ASSERT_TRUE(list.remove() == list.remove(0));
+    ASSERT_EQ(list.tail(), list.remove());
+    ASSERT_EQ(list.remove(), list.remove(0));
 }
 
 TYPED_TEST(ListTest, RemoveShouldRemoveMiddleElementProperly) {
@@ -148,7 +148,7 @@ TYPED_TEST(ListTest, RemoveShouldRemoveMiddleElementProperly) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listAfter{1, 2, 4, 5};
-    ASSERT_TRUE(list.remove(2) == listAfter);
+    ASSERT_EQ(list.remove(2), listAfter);
 }
 
 TYPED_TEST(ListTest, RemoveShouldRemoveLastElementProperly) {
@@ -156,14 +156,14 @@ TYPED_TEST(ListTest, RemoveShouldRemoveLastElementProperly) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listAfter{1, 2, 3, 4};
-    ASSERT_TRUE(list.remove(4) == listAfter);
+    ASSERT_EQ(list.remove(4), listAfter);
 }
 
 TYPED_TEST(ListTest, ReverseShouldWorkForSingleElement) {
     using List_ = typename TestFixture::List_;
 
     List_ list{1};
-    ASSERT_TRUE(list.reverse() == list);
+    ASSERT_EQ(list.reverse(), list);
 }
 
 TYPED_TEST(ListTest, ReverseShouldWorkForTwoElementsList) {
@@ -171,7 +171,7 @@ TYPED_TEST(ListTest, ReverseShouldWorkForTwoElementsList) {
 
     List_ list{1, 2};
     List_ listReversed{2, 1};
-    ASSERT_TRUE(list.reverse() == listReversed);
+    ASSERT_EQ(list.reverse(), listReversed);
 }
 
 TYPED_TEST(ListTest, ReverseShouldWorkForMultipleElementsList) {
@@ -179,7 +179,7 @@ TYPED_TEST(ListTest, ReverseShouldWorkForMultipleElementsList) {
 
     List_ list{1, 2, 3, 4, 5};
     List_ listReversed{5, 4, 3, 2, 1};
-    ASSERT_TRUE(list.reverse() == listReversed);
+    ASSERT_EQ(list.reverse(), listReversed);
 }
 
 TYPED_TEST(ListTest, SliceShouldRemoveFirstElementsCorrectly) {
@@ -188,7 +188,7 @@ TYPED_TEST(ListTest, SliceShouldRemoveFirstElementsCorrectly) {
     List_ list{1, 2, 3, 4, 5};
     List_ listSliced{3, 4, 5};
 
-    ASSERT_TRUE(list.slice(2) == listSliced);
+    ASSERT_EQ(list.slice(2), listSliced);
 }
 
 TYPED_TEST(ListTest, SliceShouldRemoveLastElementsCorrectly) {
@@ -197,7 +197,7 @@ TYPED_TEST(ListTest, SliceShouldRemoveLastElementsCorrectly) {
     List_ list{1, 2, 3, 4, 5};
     List_ listSliced{1, 2, 3};
 
-    ASSERT_TRUE(list.slice(0, 2) == listSliced);
+    ASSERT_EQ(list.slice(0, 2), listSliced);
 }
 
 TYPED_TEST(ListTest, SliceShouldRemoveBorderElementsCorrectly) {
@@ -206,17 +206,17 @@ TYPED_TEST(ListTest, SliceShouldRemoveBorderElementsCorrectly) {
     List_ list{1, 2, 3, 4, 5};
     List_ listSliced{2, 3};
 
-    ASSERT_TRUE(list.slice(1, 2) == listSliced);
+    ASSERT_EQ(list.slice(1, 2), listSliced);
 }
 
 TYPED_TEST(ListTest, FillSizeCorrect) {
     using List_ = typename TestFixture::List_;
 
-    ASSERT_TRUE(List_::fill(10, 0).size() == 10);
+    ASSERT_EQ(List_::fill(10, 0).size(), 10);
 }
 
 TYPED_TEST(ListTest, FillLargeSuccess) {
     using List_ = typename TestFixture::List_;
 
-    ASSERT_TRUE(List_::fill(1E5, 0).size() == 1E5);
+    ASSERT_EQ(List_::fill(1E5, 0).size(), 1E5);
 }
