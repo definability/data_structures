@@ -3,6 +3,7 @@
 [![Build Status](https://api.travis-ci.org/char-lie/data_structures.svg?branch=master)](https://travis-ci.org/char-lie/data_structures)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e7d30b3feb73477c8fc5219677042ca5)](https://www.codacy.com/app/char-lie/data_structures?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=char-lie/data_structures&amp;utm_campaign=Badge_Grade)
 [![CodeDocs](https://codedocs.xyz/char-lie/data_structures.svg)](https://codedocs.xyz/char-lie/data_structures/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchar-lie%2Fdata_structures.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchar-lie%2Fdata_structures?ref=badge_shield)
 
 Data structures playground.
 
@@ -46,3 +47,7 @@ Go to your `build` directory and execute `watch`
 ```bash
 watch --color "cmake .. && cmake --build . && GTEST_COLOR=1 ctest -V | tail"
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchar-lie%2Fdata_structures.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchar-lie%2Fdata_structures?ref=badge_large)
