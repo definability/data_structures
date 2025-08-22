@@ -5,6 +5,7 @@
 [![CodeDocs](https://codedocs.xyz/char-lie/data_structures.svg)](https://codedocs.xyz/char-lie/data_structures/)
 
 Data structures playground.
+Archived.
 
 # Development
 
